@@ -18,6 +18,15 @@ My personal Rofi-inspired application launcher and menu system for Hyprland.
 
 ## Screenshots
 
+- **Core Styling** - anis follows the theming defined in your global ~/.config/hypr/hyprtoolkit.conf. This includes colors, font families, sizes, border rounding, and the system icon theme. It ensures the application looks and feels like a native part of your Hyprland setup.
+
+- **Ecosystem consitency** -  Relying on the central hyprtoolkit configuration was a deliberate choice to maintain a consistent aesthetic across toolkit-based applications without duplicating settings.
+
+- **Application specific settings** - Options that are unique to anis, such as its default window dimensions, are currently hardcoded. However, I'm planning to implement a dedicated config file (~/.config/anis/config/main.conf) to make these adjustable by the user.
+
+- **Reference** - For a full list of theming options, check the hyprtoolkit configuration documentation.
+
+
 ### Dark Theme
 
 | List View | Grid View |
