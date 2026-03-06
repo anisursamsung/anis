@@ -368,7 +368,7 @@ WALLPAPER=$(~/bin/anis -mode files -source "$WALLPAPER_DIR" -view grid)
 
 if [[ -n "$WALLPAPER" ]]; then
     # Step 2: Pick fit type
-    FIT=$(~/bin/anis -mode options -source "cover,Cover;fill,Fill;tile,Tile;contain,Contain" -view grid)
+    FIT=$(~/bin/anis -mode options -source "cover,Cover;tile,Tile;contain,Contain" -view grid)
     
     if [[ -n "$FIT" ]]; then
         FIT=$(echo "$FIT" | tr '[:upper:]' '[:lower:]')
@@ -491,13 +491,40 @@ anis -mode options -source "firefox,Firefox,/usr/bin/firefox"
 
 ### SVG icons not showing
 **Problem:** SVG files fail to load
-**Solution:** anis automatically converts SVGs to PNGs in `/tmp/anis_cache/`
+**Solution:** anis automatically converts SVGs to PNGs in `/tmp/anis_cache/` by "imagemagik". So, install imagemagik via pacman.
 
-### Files mode opens files instead of returning path
-**Problem:** Clicking a file opens it instead of returning the path
-**Solution:** This is the default behavior. Use `-onclick` for custom actions or capture the output in scripts
+### Files mode does not open file on selection
 
----
+In file mode, if you do **not** pass `-onclick`, then on selection it will simply **echo the file path** to stdout. This is the default behavior.
+
+You can capture this output in scripts and do whatever you want with the selected file:
+
+```bash
+#!/usr/bin/env bash
+export HT_QUIET=1
+
+# Capture the selected file path
+SELECTED_FILE=$(anis -mode files -source ~/Pictures -view grid)
+
+# Now you can do anything with it
+echo "You selected: $SELECTED_FILE"
+cp "$SELECTED_FILE" ~/backup/
+convert "$SELECTED_FILE" -resize 50% ~/thumbs/
+```
+
+Alternatively, you can directly pass -onclick to perform an action immediately. The selected file path is available dynamically as %f:
+```bash
+
+anis -mode files -source ~/Documents -onclick "xdg-open %f"
+
+# Copy the selected file to backup
+anis -mode files -source ~/Pictures -onclick "cp %f ~/backup/"
+
+# Process with custom script
+anis -mode files -source ~/Downloads -onclick "~/scripts/process.sh %f"
+```
+
+-------
 
 ## ACKNOWLEDGMENTS
 
