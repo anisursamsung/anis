@@ -44,6 +44,7 @@ My personal Rofi-inspired application launcher and menu system for Hyprland.
 ### Prerequisites
 - Hyprland (Wayland compositor)
 - Hyprtoolkit development libraries
+- Imagemagik library from your package manager to deal withsome svg icons not showing.
 
 ### Build from source
 ```bash
