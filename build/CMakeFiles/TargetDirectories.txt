@@ -1,3 +1,0 @@
-/home/anisur/Projects/hyprland/anis/build/CMakeFiles/anis.dir
-/home/anisur/Projects/hyprland/anis/build/CMakeFiles/edit_cache.dir
-/home/anisur/Projects/hyprland/anis/build/CMakeFiles/rebuild_cache.dir

@@ -10,3 +10,4 @@ anis
 
 # Cache files
 /tmp/anis_cache/
+build/
