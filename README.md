@@ -27,13 +27,11 @@ My personal Rofi-inspired application launcher and menu system for Hyprland.
 - **Reference** - For a full list of theming options, check the hyprtoolkit configuration documentation.
 
 
-### Dark Theme
-
 | List View | Grid View |
 |-----------|-----------|
 | ![Dark List Launcher](screenshots/dark_list.png) | ![Dark Grid Launcher](screenshots/dark_grid.png) |
 
-### Light Theme
+
 
 | List View | Grid View |
 |-----------|-----------|
