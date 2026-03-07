@@ -1,3 +1,22 @@
+# Quick testing
+Download the executable  **anis** from the *release* section.
+In the same folder open terminal.
+Test
+```
+./anis
+
+or
+
+./anis -view grid -mode options -source "a,b,c" 
+
+
+or
+
+./anis -view grid -mode files -source ~/Pictures 
+
+```
+
+
 # anis
 
 My personal Rofi-inspired application launcher and menu system for Hyprland.
@@ -48,7 +67,7 @@ My personal Rofi-inspired application launcher and menu system for Hyprland.
 
 ### Build from source
 ```bash
-git clone https://github.com/yourusername/anis.git
+git clone https://github.com/anisursamsung/anis.git
 cd anis
 chmod +x make.sh
 ./make.sh
