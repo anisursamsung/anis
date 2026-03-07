@@ -1,7 +1,12 @@
 # Quick testing
 Download the executable  **anis** from the *release* section.
 In the same folder open terminal.
-Test
+First give executable permission:
+```
+chmod +x anis"
+```
+Then test:
+
 ```
 ./anis
 
