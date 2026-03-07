@@ -8,9 +8,9 @@
 #include <hyprtoolkit/element/RowLayout.hpp>
 #include <hyprtoolkit/palette/Palette.hpp>
 #include "Item.hpp"
+#include "SvgConverter.hpp" 
 #include <functional>
 #include <string>
-
 #include <filesystem>
 #include <algorithm>
 #include <cctype>
@@ -110,105 +110,66 @@ private:
         
         m_background->addChild(m_mainLayout);
     }
-    
-//    void createImage() {
-//        auto palette = Hyprtoolkit::CPalette::palette();
-//        
-//        float imageSize = m_cachedImageHeight - IMAGE_PADDING_VERTICAL;
-//        std::string iconSource = m_data.iconSource();
-//        
-//        auto builder = Hyprtoolkit::CImageBuilder::begin()
-//            ->size(Hyprtoolkit::CDynamicSize(
-//                Hyprtoolkit::CDynamicSize::HT_SIZE_ABSOLUTE,
-//                Hyprtoolkit::CDynamicSize::HT_SIZE_ABSOLUTE,
-//                {imageSize, imageSize}))
-//            ->fitMode(Hyprtoolkit::IMAGE_FIT_MODE_COVER)
-//            ->rounding(palette->m_vars.smallRounding)
-//            ->sync(false);
-//        
-//        if (m_data.isApp() && std::get<AppItem>(m_data.data).iconDesc) {
-//            builder->icon(std::get<AppItem>(m_data.data).iconDesc);
-//        } else if (!iconSource.empty() && iconSource.find("icon:") != 0) {
-//            std::string pathCopy = iconSource;
-//            builder->path(std::move(pathCopy));
-//        }
-//        
-//        m_image = builder->commence();
-//    }
 
-
-void createImage() {
-    auto palette = Hyprtoolkit::CPalette::palette();
-    
-    float imageSize = m_cachedImageHeight - IMAGE_PADDING_VERTICAL;
-    
-    auto builder = Hyprtoolkit::CImageBuilder::begin()
-        ->size(Hyprtoolkit::CDynamicSize(
-            Hyprtoolkit::CDynamicSize::HT_SIZE_ABSOLUTE,
-            Hyprtoolkit::CDynamicSize::HT_SIZE_ABSOLUTE,
-            {imageSize, imageSize}))
-        ->fitMode(Hyprtoolkit::IMAGE_FIT_MODE_COVER)
-        ->rounding(palette->m_vars.smallRounding)
-        ->sync(false);
-    
-    // PATHWAY 1: Launcher mode with system icon (DIRECT)
-    if (m_data.isApp() && std::get<AppItem>(m_data.data).iconDesc) {
-        builder->icon(std::get<AppItem>(m_data.data).iconDesc);
-    }
-    // PATHWAY 2: Everything else (options mode, files mode, launcher with file path)
-    else {
-        std::string iconSource = m_data.iconSource();
+    void createImage() {
+        auto palette = Hyprtoolkit::CPalette::palette();
         
-        if (!iconSource.empty() && iconSource.find("icon:") != 0) {
-            // Try as file path first
-            if (fs::exists(iconSource)) {
-                // Check if it's SVG and convert
-                std::string ext = fs::path(iconSource).extension().string();
-                std::transform(ext.begin(), ext.end(), ext.begin(), ::tolower);
-                
-                if (ext == ".svg") {
-                    // Convert SVG to PNG
-                    std::string cacheDir = "/tmp/anis_cache/";
-                    fs::create_directories(cacheDir);
-                    std::string cachePath = cacheDir + std::to_string(std::hash<std::string>{}(iconSource)) + ".png";
-                    
-                    if (!fs::exists(cachePath)) {
-                        std::string cmd = "convert -background none -size 64x64 \"" + iconSource + "\" \"" + cachePath + "\" 2>/dev/null";
-                        std::system(cmd.c_str());
-                    }
-                    
-                    if (fs::exists(cachePath)) {
-                        std::string pathCopy = cachePath;
-                        builder->path(std::move(pathCopy));
-                    } else {
-                        std::string pathCopy = iconSource;
-                        builder->path(std::move(pathCopy));
-                    }
-                } else {
-                    std::string pathCopy = iconSource;
+        float imageSize = m_cachedImageHeight - IMAGE_PADDING_VERTICAL;
+        
+        auto builder = Hyprtoolkit::CImageBuilder::begin()
+            ->size(Hyprtoolkit::CDynamicSize(
+                Hyprtoolkit::CDynamicSize::HT_SIZE_ABSOLUTE,
+                Hyprtoolkit::CDynamicSize::HT_SIZE_ABSOLUTE,
+                {imageSize, imageSize}))
+            ->fitMode(Hyprtoolkit::IMAGE_FIT_MODE_COVER)
+            ->rounding(palette->m_vars.smallRounding)
+            ->sync(false);
+        
+        // PATHWAY 1: Launcher mode with system icon (DIRECT)
+        if (m_data.isApp() && std::get<AppItem>(m_data.data).iconDesc) {
+            builder->icon(std::get<AppItem>(m_data.data).iconDesc);
+        }
+        // PATHWAY 2: Everything else
+        else {
+            std::string iconSource = m_data.iconSource();
+            
+            if (!iconSource.empty() && iconSource.find("icon:") != 0) {
+                // Try as file path first
+                if (fs::exists(iconSource)) {
+                    // Svg converter
+                    std::string pathToUse = SvgConverter::ensurePngIcon(iconSource, imageSize);
+                    std::string pathCopy = pathToUse;
                     builder->path(std::move(pathCopy));
-                }
-            } 
-            // Not a file, try as system icon name
-            else {
-                auto iconFactory = m_backend->systemIcons();
-                if (iconFactory) {
-                    auto iconDesc = iconFactory->lookupIcon(iconSource);
-                    if (iconDesc && iconDesc->exists()) {
-                        builder->icon(iconDesc);
-                    } else {
-                        auto fallback = iconFactory->lookupIcon("image-missing");
-                        if (fallback && fallback->exists()) {
-                            builder->icon(fallback);
+                    
+                    
+                    //if we don't want to use Svgconverter
+//                    std::string pathCopy = iconSource;
+//                    builder->path(std::move(pathCopy));
+                    
+                    
+                    
+                    
+                } 
+                // Not a file, try as system icon name
+                else {
+                    auto iconFactory = m_backend->systemIcons();
+                    if (iconFactory) {
+                        auto iconDesc = iconFactory->lookupIcon(iconSource);
+                        if (iconDesc && iconDesc->exists()) {
+                            builder->icon(iconDesc);
+                        } else {
+                            auto fallback = iconFactory->lookupIcon("image-missing");
+                            if (fallback && fallback->exists()) {
+                                builder->icon(fallback);
+                            }
                         }
                     }
                 }
             }
         }
+        
+        m_image = builder->commence();
     }
-    
-    m_image = builder->commence();
-}
     
     void createTitle() {
         auto palette = Hyprtoolkit::CPalette::palette();
