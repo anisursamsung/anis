@@ -51,15 +51,16 @@ My personal Rofi-inspired application launcher and menu system for Hyprland.
 - **Reference** - For a full list of theming options, check the hyprtoolkit configuration documentation.
 
 
-| List View | Grid View |
-|-----------|-----------|
-| ![Dark List Launcher](screenshots/dark_list.png) | ![Dark Grid Launcher](screenshots/dark_grid.png) |
-
-
-
-| List View | Grid View |
-|-----------|-----------|
-| ![Light List Launcher](screenshots/light_list.png) | ![Light Grid Launcher](screenshots/light_grid.png) |
+ ![img1](screenshots/img1.png) 
+ 
+ ![img2](screenshots/img2.png) 
+ 
+ ![img3](screenshots/img3.png) 
+ 
+ ![img4](screenshots/img4.png) 
+ 
+ ![img5](screenshots/img5.png) 
+ 
 
 ---
 
