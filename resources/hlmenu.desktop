@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=HLMenu
+Comment=Hyprland Application Launcher and Menu
+Exec=hlmenu
+Icon=hlmenu
+Terminal=false
+Type=Application
+Categories=Utility;System;
+Keywords=launcher;menu;app;hyprland;wayland;
