@@ -106,15 +106,42 @@ public:
     }
 
     /**
-     * @brief Processes keyboard navigation events (Arrow keys).
+     * @brief Processes keyboard navigation events (Arrows, PageUp, PageDown, Home, End).
      */
     void handleKey(const Hyprtoolkit::Input::SKeyboardKeyEvent& e) {
         if (!e.down || !m_itemsList) return;
 
-        if (e.xkbKeysym == XKB_KEY_Left) moveSelection(-1, 0);
-        else if (e.xkbKeysym == XKB_KEY_Right) moveSelection(1, 0);
-        else if (e.xkbKeysym == XKB_KEY_Up) moveSelection(0, -1);
-        else if (e.xkbKeysym == XKB_KEY_Down) moveSelection(0, 1);
+        if (e.xkbKeysym == XKB_KEY_Left) {
+            moveSelection(-1, 0);
+        } else if (e.xkbKeysym == XKB_KEY_Right) {
+            moveSelection(1, 0);
+        } else if (e.xkbKeysym == XKB_KEY_Up) {
+            moveSelection(0, -1);
+        } else if (e.xkbKeysym == XKB_KEY_Down) {
+            moveSelection(0, 1);
+        } else if (e.xkbKeysym == XKB_KEY_Page_Up || e.xkbKeysym == XKB_KEY_Prior) {
+            float viewH = (m_scroll && m_scroll->size().y > 0) ? m_scroll->size().y : 400.0f;
+            int itemStep = std::max(1, m_config.gridItemHeight + m_config.gridItemVerticalGap);
+            int rowsPerPage = std::max(1, (int)(viewH / itemStep));
+            moveSelection(0, -rowsPerPage);
+        } else if (e.xkbKeysym == XKB_KEY_Page_Down || e.xkbKeysym == XKB_KEY_Next) {
+            float viewH = (m_scroll && m_scroll->size().y > 0) ? m_scroll->size().y : 400.0f;
+            int itemStep = std::max(1, m_config.gridItemHeight + m_config.gridItemVerticalGap);
+            int rowsPerPage = std::max(1, (int)(viewH / itemStep));
+            moveSelection(0, rowsPerPage);
+        } else if (e.xkbKeysym == XKB_KEY_Home) {
+            if (!m_visibleIndices.empty()) {
+                m_selected = 0;
+                updateItemSelection();
+                ensureVisible();
+            }
+        } else if (e.xkbKeysym == XKB_KEY_End) {
+            if (!m_visibleIndices.empty()) {
+                m_selected = (int)m_visibleIndices.size() - 1;
+                updateItemSelection();
+                ensureVisible();
+            }
+        }
     }
 
     /**

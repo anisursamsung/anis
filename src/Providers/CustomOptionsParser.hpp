@@ -117,9 +117,28 @@ public:
     }
 
     /**
+     * @brief Converts escaped literal '\n' sequences into actual newlines.
+     */
+    static std::string unescapeNewlines(const std::string& input) {
+        std::string result;
+        result.reserve(input.size());
+        for (size_t i = 0; i < input.size(); ++i) {
+            if (input[i] == '\\' && i + 1 < input.size() && input[i + 1] == 'n') {
+                result.push_back('\n');
+                ++i;
+            } else {
+                result.push_back(input[i]);
+            }
+        }
+        return result;
+    }
+
+    /**
      * @brief Automatically detects whether input is simple, structured, or multiline and parses it.
      */
-    static std::vector<Item> parseOptions(const std::string& source, const std::string& onClick = "") {
+    static std::vector<Item> parseOptions(const std::string& rawSource, const std::string& onClick = "") {
+        std::string source = unescapeNewlines(rawSource);
+
         if (source.find('\n') != std::string::npos) {
             return parseLines(source, onClick);
         }

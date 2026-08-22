@@ -108,12 +108,27 @@ public:
     void handleKey(const Hyprtoolkit::Input::SKeyboardKeyEvent& e) {
         if (!e.down || !m_itemsList) return;
 
-        if (e.xkbKeysym == XKB_KEY_Up) moveSelection(-1);
-        else if (e.xkbKeysym == XKB_KEY_Down) moveSelection(1);
-        else if (e.xkbKeysym == XKB_KEY_Page_Up) moveSelection(-10);
-        else if (e.xkbKeysym == XKB_KEY_Page_Down) moveSelection(10);
-        else if (e.xkbKeysym == XKB_KEY_Home) setSelected(0);
-        else if (e.xkbKeysym == XKB_KEY_End) setSelected(m_visibleIndices.size() - 1);
+        if (e.xkbKeysym == XKB_KEY_Up) {
+            moveSelection(-1);
+        } else if (e.xkbKeysym == XKB_KEY_Down) {
+            moveSelection(1);
+        } else if (e.xkbKeysym == XKB_KEY_Page_Up || e.xkbKeysym == XKB_KEY_Prior) {
+            float viewH = (m_scroll && m_scroll->size().y > 0) ? m_scroll->size().y : 400.0f;
+            int itemStep = std::max(1, m_config.listItemHeight + m_config.listItemsVerticalGap);
+            int itemsPerPage = std::max(1, (int)(viewH / itemStep));
+            moveSelection(-itemsPerPage);
+        } else if (e.xkbKeysym == XKB_KEY_Page_Down || e.xkbKeysym == XKB_KEY_Next) {
+            float viewH = (m_scroll && m_scroll->size().y > 0) ? m_scroll->size().y : 400.0f;
+            int itemStep = std::max(1, m_config.listItemHeight + m_config.listItemsVerticalGap);
+            int itemsPerPage = std::max(1, (int)(viewH / itemStep));
+            moveSelection(itemsPerPage);
+        } else if (e.xkbKeysym == XKB_KEY_Home) {
+            setSelected(0);
+        } else if (e.xkbKeysym == XKB_KEY_End) {
+            if (!m_visibleIndices.empty()) {
+                setSelected((int)m_visibleIndices.size() - 1);
+            }
+        }
     }
 
     /**

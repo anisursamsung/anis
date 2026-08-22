@@ -134,6 +134,7 @@ Discovers and launches all installed desktop applications by parsing standard Fr
 * **Searchable Fields**: Application Name (`Name`), Generic Name (`GenericName`), and Description (`Comment`).
 * **Precedence Order**: `~/.local/share/applications` (user overrides) ➔ User Flatpaks ➔ System Flatpaks ➔ Snaps ➔ `/usr/share/applications`. Duplicate desktop files are automatically deduplicated.
 * **Icons**: Automatically resolves icons from your active icon theme (Papirus, Adwaita, Breeze, etc.).
+* **Native Launching**: Selecting an application automatically launches it in the background using its official `.desktop` `Exec=` definition.
 
 #### Examples:
 
@@ -143,9 +144,6 @@ hlmenu --mode apps
 
 # Launch application menu in Single-Column List View
 hlmenu --mode apps --view list
-
-# Custom notification on app launch
-hlmenu --mode apps --onclick "notify-send 'Launching' '%n' && %f"
 ```
 
 ---
@@ -213,14 +211,18 @@ hlmenu --mode workspaces --view grid
 
 Scans a target directory specified by `--source <dir>` and displays files and folders with system file icons.
 
-* **Activation Template (`--onclick`)**:
+* **Default Behavior (No `--onclick` passed)**: Selecting any file or folder **prints its absolute file path (`%f`) to `stdout`** and exits `0`. Perfect for shell scripting and piped workflows!
+* **Custom Action Template (`--onclick`)**:
   * `%f` = Full absolute file path (e.g. `/home/user/Documents/report.pdf`)
   * `%n` = File name (e.g. `report.pdf`)
 
 #### Examples:
 
 ```bash
-# Browse Documents and open selection with default desktop application (xdg-open)
+# Default: Prints chosen file path to stdout (no --onclick needed!)
+SELECTED_FILE=$(hlmenu --mode files --source ~/Documents)
+
+# Open selection with default desktop application (xdg-open)
 hlmenu --mode files --source ~/Documents --onclick "xdg-open %f"
 
 # Browse Code directory and open selected file in Neovim inside a terminal
@@ -236,12 +238,16 @@ hlmenu --mode files --source ~/Downloads --view list --onclick "xdg-open %f"
 
 Scans a directory for image files (`.png`, `.jpg`, `.jpeg`, `.webp`, `.gif`, `.bmp`, `.svg`) and displays high-resolution previews in a responsive grid.
 
+* **Default Behavior (No `--onclick` passed)**: Selecting an image **prints its absolute file path (`%f`) to `stdout`** and exits `0`.
 * **Thumbnail Generation**: Automatically scales and caches image previews for fast scrolling.
-* **Activation Template (`--onclick`)**: Supports `%f` (image path) and `%n` (image filename).
+* **Custom Action Template (`--onclick`)**: Supports `%f` (image path) and `%n` (image filename).
 
 #### Examples:
 
 ```bash
+# Default: Prints chosen image path to stdout
+WALLPAPER=$(hlmenu --mode images --source ~/Pictures/Wallpapers)
+
 # Wallpaper Picker with swww wallpaper daemon
 hlmenu --mode images --source ~/Pictures/Wallpapers --title "Select Wallpaper" --onclick "swww img %f --transition-type wipe"
 
@@ -258,14 +264,16 @@ hlmenu --mode images --source ~/Pictures/Screenshots --title "Screenshots" --onc
 
 Accepts custom delimited options for building interactive menus, power menus, screenshot selectors, and dynamic scripts.
 
+* **Default Behavior (No `--onclick` passed)**: Selecting an option **prints its selected name/action (`%a`) to `stdout`** and exits `0`.
+
 #### A. Simple Comma-Separated List:
 Format: `"Item 1, Item 2, Item 3"`
 
 ```bash
-# Simple interactive selection menu
-hlmenu --mode options --source "Option A, Option B, Option C" --title "Choose Option" --view list
+# Default: Outputs selected option directly to stdout
+CHOICE=$(hlmenu --mode options --source "Option A, Option B, Option C")
 
-# With custom on-click action (%a = action/selected item)
+# With custom on-click action (%a = action/selected item, %n = display name)
 hlmenu --mode options --source "Low, Medium, High, Ultra" --title "Performance Profile" --onclick "notify-send 'Profile Set' '%a'"
 ```
 
@@ -381,13 +389,13 @@ hlmenu --modes files,images \
 | :--- | :--- | :--- |
 | **`Arrow Up` / `Down`** | All Views | Move selection cursor up / down |
 | **`Arrow Left` / `Right`** | Grid View | Move selection cursor left / right across columns |
+| **`PageUp` / `PageDown`** | All Views | Scroll one full page up or down dynamically |
+| **`Home` / `End`** | All Views | Jump directly to the first or last item |
 | **`Shift + Right`** | Combined Modes | Switch to the next mode tab (`Apps` ➔ `Run` ➔ `Windows` ➔ `Workspaces`) |
 | **`Shift + Left`** | Combined Modes | Switch to the previous mode tab (`Workspaces` ➔ `Windows` ➔ `Run` ➔ `Apps`) |
 | **`Ctrl + Escape`** | All Views | **Toggle between Grid View and List View in-place** |
 | **`Enter`** | All Views | Activate selected item / execute typed command / focus window / switch workspace |
-| **`Escape`** | All Views | Close `hlmenu` immediately |
-| **`Home` / `End`** | All Views | Jump to the first or last item |
-| **`PageUp` / `PageDown`** | All Views | Scroll 10 items up or down |
+| **`Escape`** | All Views | Close `hlmenu` immediately (exits code `1`) |
 | **`Left Mouse Click`** | TitleBar / View | Select and activate an item, or click on any TitleBar tab |
 
 ---
@@ -398,7 +406,33 @@ hlmenu --modes files,images \
 ```
 ~/.config/hlmenu/hlmenu.conf
 ```
-If this file does not exist on first launch, `hlmenu` creates it with the bundled Obsidian Dark theme.
+If this file does not exist on first launch, `hlmenu` automatically creates it with the bundled Obsidian Dark theme.
+
+### 📁 Custom Configuration File Loading (`--config` / `-c`)
+
+You can create multiple theme/geometry profiles (e.g. a compact popup theme, a full-screen launcher theme, or a light theme) and load any of them on demand:
+
+```bash
+# Load a custom compact config file
+hlmenu --config ~/.config/hlmenu/compact.conf
+
+# Short alias:
+hlmenu -c ~/.config/hlmenu/compact.conf --mode options --source "Yes, No, Cancel"
+```
+
+### ⚡ CLI Argument Precedence (Overrides Config File)
+
+`hlmenu` follows a strict **precedence hierarchy**:
+
+$$\textbf{CLI Arguments} \;\;>\;\; \textbf{Loaded Config File (\texttt{hlmenu.conf})} \;\;>\;\; \textbf{Built-in Defaults}$$
+
+**Key Rule**: Any parameter specified on the command line (e.g. `--size 420x220`, `--anchor top`, `--prompt "Search..."`, `--no-title`, `--view list`) will **always override** the corresponding setting in your `hlmenu.conf` for that invocation only. Your configuration file on disk is never modified.
+
+```bash
+# Even if hlmenu.conf sets window-size = 670x480 and default-mode = grid,
+# this invocation runs as a 400x200 List View anchored to the top:
+hlmenu --size 400x200 --anchor top --view list --mode run
+```
 
 ### Complete `hlmenu.conf` Reference
 
@@ -478,7 +512,7 @@ grid-item-active-border-size = 2     # Active border thickness
 grid-item-active-font-color = #89b4faff # Active font color
 
 # --- List View & Rows (Row-styled items) ---
-list-item-height = 58                # Height of each list row (px)
+list-item-height = 42                # Height of each row (px)
 list-items-vertical-gap = 6          # Gap between rows (px)
 list-item-corner-radius = 8          # Corner rounding of rows
 list-item-icon-size = 36             # Icon size in list rows (px)
