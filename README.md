@@ -498,7 +498,7 @@ grid-item-padding = 6                # Internal padding of card tiles
 grid-item-font-size = 11             # Card title font size
 grid-item-desc-font-size = 9         # Card subtitle font size
 grid-item-desc-font-color = #a6adc8cc # Card subtitle font color
-grid-auto-center-horizontal = true    # Dynamically center grid cards when all items fit in a single row
+grid-auto-center-horizontal = false   # Dynamically center grid cards when all items fit in a single row (default: false)
 
 # Resting Card Appearance
 grid-item-background = #1e1e2ecc     # Default tile background fill

@@ -78,7 +78,7 @@ namespace HLMenu {
         Hyprtoolkit::CHyprColor gridItemFontColor         = Hyprtoolkit::CHyprColor(0.80f, 0.84f, 0.96f, 1.00f);
         Hyprtoolkit::CHyprColor gridItemActiveFontColor   = Hyprtoolkit::CHyprColor(0.54f, 0.71f, 0.98f, 1.00f);
         Hyprtoolkit::CHyprColor gridItemDescFontColor     = Hyprtoolkit::CHyprColor(0.65f, 0.68f, 0.78f, 0.80f);
-        bool gridAutoCenterHorizontal                   = true;
+        bool gridAutoCenterHorizontal                   = false;
 
         // --- List View & Items ---
         int listItemHeight                              = 58;
