@@ -430,6 +430,10 @@ namespace HLMenu {
             if (auto col = parseColor(val)) config.gridItemActiveFontColor = *col;
         } else if (key == "grid-item-desc-font-color") {
             if (auto col = parseColor(val)) config.gridItemDescFontColor = *col;
+        } else if (key == "grid-auto-center-horizontal" || key == "grid-center-single-row" || key == "grid-auto-center" || key == "horizontal-center-grid-if-fit-in-single-row") {
+            std::string v = val;
+            std::transform(v.begin(), v.end(), v.begin(), ::tolower);
+            config.gridAutoCenterHorizontal = (v == "true" || v == "1" || v == "yes");
         }
 
         // --- List View & Item ---

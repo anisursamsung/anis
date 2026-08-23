@@ -228,9 +228,9 @@ private:
 
         int maxPossibleColumns = std::max(1, static_cast<int>((availableWidth + gapX) / (itemW + gapX)));
 
-        // If all items fit in a single row, clamp columns to item count for perfect centering
+        // If all items fit in a single row and gridAutoCenterHorizontal is enabled, clamp columns for perfect centering
         size_t totalVisible = m_visibleIndices.size();
-        if (totalVisible > 0 && totalVisible < static_cast<size_t>(maxPossibleColumns)) {
+        if (m_config.gridAutoCenterHorizontal && totalVisible > 0 && totalVisible < static_cast<size_t>(maxPossibleColumns)) {
             m_columns = static_cast<int>(totalVisible);
         } else {
             m_columns = maxPossibleColumns;
