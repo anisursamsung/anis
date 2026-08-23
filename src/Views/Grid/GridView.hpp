@@ -215,6 +215,7 @@ private:
 
     /**
      * @brief Computes maximum column count that fits in the visible width.
+     * Clamps to total item count if all items fit in a single row so small menus are centered.
      */
     void updateGridLayout() {
         float availableWidth = m_scroll->size().x;
@@ -225,8 +226,15 @@ private:
         int itemW = m_config.gridItemWidth;
         int gapX = m_config.gridItemHorizontalGap;
 
-        int maxPossibleColumns = (availableWidth + gapX) / (itemW + gapX);
-        m_columns = std::max(1, maxPossibleColumns);
+        int maxPossibleColumns = std::max(1, static_cast<int>((availableWidth + gapX) / (itemW + gapX)));
+
+        // If all items fit in a single row, clamp columns to item count for perfect centering
+        size_t totalVisible = m_visibleIndices.size();
+        if (totalVisible > 0 && totalVisible < static_cast<size_t>(maxPossibleColumns)) {
+            m_columns = static_cast<int>(totalVisible);
+        } else {
+            m_columns = maxPossibleColumns;
+        }
 
         rebuildGrid();
     }
