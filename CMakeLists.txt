@@ -61,4 +61,10 @@ target_link_libraries(hlmenu
 
 include(GNUInstallDirs)
 install(TARGETS hlmenu DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(FILES resources/hlmenu.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/resources/hlmenu.desktop")
+    install(FILES resources/hlmenu.desktop DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+endif()
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/assets/placeholderappicon.png")
+    install(FILES assets/placeholderappicon.png DESTINATION ${CMAKE_INSTALL_DATADIR}/hlmenu)
+endif()
+

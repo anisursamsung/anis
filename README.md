@@ -62,7 +62,7 @@ Whether used as a daily desktop application launcher, a quick window manager, a 
 | **Cairo & Pango** | `cairo`, `pango` | 2D vector graphics and text rendering |
 | **CMake** | `cmake` (>= 3.20) | Build system generator |
 
-### Building from Source
+### Building and Installing
 
 Clone the repository and build using the automated build script:
 
@@ -70,21 +70,29 @@ Clone the repository and build using the automated build script:
 git clone https://github.com/your-username/hlmenu.git
 cd hlmenu
 
-# Compile and install to ~/.local/bin
-bash make.sh
+# User-space install (recommended, installs to ~/.local without root):
+./make.sh
+
+# Or system-wide install (all users):
+sudo ./make.sh /usr/local
 ```
 
-Or build manually with CMake:
+`./make.sh` automatically configures CMake, builds with `--parallel`, and installs:
+- **Binary**: `<prefix>/bin/hlmenu` (`~/.local/bin/hlmenu` by default)
+- **Desktop Entry**: `<prefix>/share/applications/hlmenu.desktop`
+- **Assets**: `<prefix>/share/hlmenu/placeholderappicon.png`
+- **Configuration**: Default config files (`hlmenu.conf`, `custom.conf`) are auto-created at `~/.config/hlmenu/` on first run if not present.
+
+#### Manual Build with CMake (Alternative)
 
 ```bash
-cmake -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build -j$(nproc)
-
-# Install binary and desktop entries
-sudo cmake --install build
+cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=~/.local
+cmake --build build --parallel
+cmake --install build
 ```
 
 ---
+
 
 ## 📋 Command-Line Arguments Reference
 
