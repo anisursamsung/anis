@@ -107,6 +107,201 @@ namespace HLMenu {
         return getDefaultConfigDir() + "custom.conf";
     }
 
+    static const char* DEFAULT_HLMENU_CONF = R"(# ==============================================================================
+# hlmenu - Default Dark Theme (hlmenu.conf)
+# ==============================================================================
+# Deep Obsidian Midnight theme with slate card tiles and glowing sapphire accents.
+# ==============================================================================
+
+# --- Window & Geometry ---
+window-size = 670x480
+window-padding = 10
+margin-top-left = 0,0
+margin-bottom-right = 0,0
+anchor = 0 # 0=Center, 1=Top, 2=Bottom, 4=Left, 8=Right
+
+# --- Window Backdrop & Border ---
+background = #181825f5
+border-color = #89b4faff
+border-size = 2
+corner-radius = 14
+
+font-family = Sans
+monospace-font = monospace
+icon-pack = Papirus
+default-mode = grid # grid or list
+
+# --- Title Bar (Header / Mode Switcher Tabs) ---
+show-titlebar = true
+titlebar-height = 32
+titlebar-gap = 8
+show-mode-tabs = true
+titlebar-title = Applications
+titlebar-title-font-size = 15
+titlebar-title-font-color = #89b4faff
+
+# --- Search Bar ---
+show-searchbar = true
+searchbar-height = 38
+searchbar-gap = 8
+search-placeholder = Type to search...
+search-placeholder-color = #a6adc8aa
+search-font-size = 13
+search-font-color = #cdd6f4ff
+search-background = #313244cc
+search-border-color = #89b4fa88
+search-border-size = 1
+search-corner-radius = 8
+
+# --- Subtitles Toggle (Applies to all modes in List and Grid views) ---
+show-subtitles = true
+
+# --- Grid View & Items (Card-styled tiles) ---
+grid-item-width = 100
+grid-item-height = 88
+grid-item-horizontal-gap = 10
+grid-item-vertical-gap = 10
+grid-item-corner-radius = 8
+grid-item-icon-size = 44
+grid-item-font-size = 11
+grid-item-desc-font-size = 9
+grid-item-desc-font-color = #a6adc8cc
+grid-item-padding = 6
+grid-auto-center-horizontal = false   # Dynamically center grid cards when all items fit in a single row (default: false)
+
+# Resting Tile (Card Appearance)
+grid-item-background = #1e1e2ecc
+grid-item-border-color = #313244ff
+grid-item-border-size = 1
+grid-item-font-color = #cdd6f4ff
+
+# Active / Selected Tile (Glowing Sapphire Accent)
+grid-item-active-background = #89b4fa33
+grid-item-active-border-color = #89b4faff
+grid-item-active-border-size = 2
+grid-item-active-font-color = #89b4faff
+
+# --- List View & Items (Card-styled rows) ---
+list-item-height = 58
+list-items-vertical-gap = 6
+list-item-corner-radius = 8
+list-item-icon-size = 36
+list-item-title-font-size = 13
+list-item-desc-font-size = 11
+list-item-padding = 8
+
+# Resting Row
+list-item-background = #1e1e2ecc
+list-item-border-color = #313244ff
+list-item-border-size = 1
+list-item-title-font-color = #cdd6f4ff
+list-item-desc-font-color = #a6adc8ff
+
+# Active / Selected Row
+list-item-active-background = #89b4fa33
+list-item-active-border-color = #89b4faff
+list-item-active-border-size = 2
+list-item-active-title-font-color = #89b4faff
+
+# --- Help View ---
+help-header-font-size = 15
+help-header-font-color = #89b4faff
+help-text-font-size = 12
+help-text-font-color = #cdd6f4ff
+)";
+
+    static const char* DEFAULT_CUSTOM_CONF = R"(# ==============================================================================
+# hlmenu - Large Light Theme Preset (custom.conf)
+# ==============================================================================
+# Crisp Porcelain Latte theme with subtle porcelain cards and royal sapphire highlights.
+# ==============================================================================
+
+# --- Window & Geometry (Large 840x580 Light Canvas) ---
+window-size = 840x580
+window-padding = 20
+margin-top-left = 0,0
+margin-bottom-right = 0,0
+anchor = 0 # 0=Center, 1=Top, 2=Bottom, 4=Left, 8=Right
+
+# --- Window Styling (Latte White Aesthetic) ---
+background = #eff1f5fa
+border-color = #1e66d5ff
+border-size = 2
+corner-radius = 18
+
+font-family = Sans
+monospace-font = monospace
+icon-pack = Papirus
+default-mode = grid # grid or list
+
+# --- Top Bar (Title & Search) ---
+topbar-percent = 0.10
+topbar-title-ratio = 0.25
+topbar-title = Applications
+topbar-title-font-size = 18
+topbar-title-font-color = #1e66d5ff
+
+search-placeholder = Type to search...
+search-placeholder-color = #8c8fa1aa
+search-font-size = 14
+search-font-color = #4c4f69ff
+search-background = #e6e9efff
+search-border-color = #1e66d588
+search-border-size = 1
+search-corner-radius = 10
+
+# --- Large Grid View & Items (120x120 Tiles with 64px Icons) ---
+grid-item-width = 120
+grid-item-height = 120
+grid-item-horizontal-gap = 16
+grid-item-vertical-gap = 16
+grid-item-corner-radius = 14
+grid-item-icon-size = 64
+grid-item-font-size = 12
+grid-item-padding = 10
+grid-auto-center-horizontal = false
+
+# Card background & border when NOT selected
+grid-item-background = #dce0e8aa
+grid-item-border-color = #bcc0ccaa
+grid-item-border-size = 1
+grid-item-font-color = #4c4f69ff
+
+# Distinct highlight background & border when SELECTED
+grid-item-active-background = #1e66d526
+grid-item-active-border-color = #1e66d5ff
+grid-item-active-border-size = 2
+grid-item-active-font-color = #1e66d5ff
+
+# --- Large List View & Items (58px Rows with 40px Icons) ---
+list-item-height = 58
+list-items-vertical-gap = 8
+list-item-corner-radius = 12
+list-item-icon-size = 40
+list-item-title-font-size = 14
+list-item-desc-font-size = 12
+list-item-padding = 10
+
+# Card background & border when NOT selected
+list-item-background = #dce0e8aa
+list-item-border-color = #bcc0ccaa
+list-item-border-size = 1
+list-item-title-font-color = #4c4f69ff
+list-item-desc-font-color = #6c6f85ff
+
+# Distinct highlight background & border when SELECTED
+list-item-active-background = #1e66d526
+list-item-active-border-color = #1e66d5ff
+list-item-active-border-size = 2
+list-item-active-title-font-color = #1e66d5ff
+
+# --- Help View ---
+help-header-font-size = 16
+help-header-font-color = #1e66d5ff
+help-text-font-size = 13
+help-text-font-color = #4c4f69ff
+)";
+
     void ConfigParser::ensureDefaultConfigExists() {
         std::string configDir = getDefaultConfigDir();
         std::filesystem::path dirPath(configDir);
@@ -119,6 +314,11 @@ namespace HLMenu {
             if (!std::filesystem::exists(mainConf)) {
                 if (std::filesystem::exists("resources/hlmenu.conf")) {
                     std::filesystem::copy_file("resources/hlmenu.conf", mainConf);
+                } else {
+                    std::ofstream out(mainConf);
+                    if (out.is_open()) {
+                        out << DEFAULT_HLMENU_CONF;
+                    }
                 }
             }
 
@@ -127,6 +327,11 @@ namespace HLMenu {
             if (!std::filesystem::exists(customConf)) {
                 if (std::filesystem::exists("resources/custom.conf")) {
                     std::filesystem::copy_file("resources/custom.conf", customConf);
+                } else {
+                    std::ofstream out(customConf);
+                    if (out.is_open()) {
+                        out << DEFAULT_CUSTOM_CONF;
+                    }
                 }
             }
         } catch (...) {}
@@ -541,6 +746,8 @@ namespace HLMenu {
     }
 
     MenuConfig ConfigParser::loadConfig(const std::string& customPath) {
+        ensureDefaultConfigExists();
+
         MenuConfig config;
         std::string targetPath = customPath;
 
