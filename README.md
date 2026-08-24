@@ -10,6 +10,7 @@
 
 <p align="center">
   <a href="#-overview">Overview</a> •
+  <a href="#-screenshots">Screenshots</a> •
   <a href="#-key-features">Key Features</a> •
   <a href="#-installation">Installation</a> •
   <a href="#-command-line-arguments-reference">CLI Reference</a> •
@@ -26,6 +27,18 @@
 **`hlmenu`** is a native, ultra-fast application launcher, window switcher, command runner, and dynamic menu designed specifically for **Hyprland** and modern Wayland compositors. Built directly on top of the official **Hyprtoolkit** UI widget framework, `hlmenu` delivers native Wayland layer-shell integration, hardware-accelerated rendering, buttery smooth 60fps animations, and instantaneous response times.
 
 Whether used as a daily desktop application launcher, a quick window manager, a system command runner (`rofi run` / `dmenu` replacement), an image wallpaper selector, or a custom scriptable menu (power menus, clipboard managers), `hlmenu` offers deep customization with pixel-perfect Catppuccin-inspired styling out of the box.
+
+---
+
+## 📸 Screenshots
+
+![hlmenu screenshot 1](assets/screenshots/s1.png)
+![hlmenu screenshot 2](assets/screenshots/s2.png)
+![hlmenu screenshot 3](assets/screenshots/s3.png)
+![hlmenu screenshot 4](assets/screenshots/s4.png)
+![hlmenu screenshot 5](assets/screenshots/s5.png)
+![hlmenu screenshot 6](assets/screenshots/s6.png)
+![hlmenu screenshot 7](assets/screenshots/s7.png)
 
 ---
 
